@@ -23,6 +23,7 @@ builder.Services.AddMassTransit(cfg =>
     }));
 
     cfg.AddConsumer<GetValueConsumer>();
+    cfg.AddConsumer<GenerateTicketCancelConsumer>();
 });
 var app = builder.Build();
 
