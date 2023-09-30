@@ -6,9 +6,7 @@ namespace MessageBrokers;
 
 public class RabbitMQProvider
 {
-    public static IBusControl ConfigureBus(
-        
-        IServiceProvider serviceProvider, Action<IRabbitMqBusFactoryConfigurator, IRabbitMqHost> action = null)
+    public static IBusControl ConfigureBus(IServiceProvider serviceProvider, Action<IRabbitMqBusFactoryConfigurator, IRabbitMqHost> action = null)
     {
         return Bus.Factory.CreateUsingRabbitMq(cfg =>
         {
