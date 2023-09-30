@@ -3,22 +3,32 @@ using Microsoft.EntityFrameworkCore;
 using SagaService;
 using SagaStateMachine;
 
-var builder = WebApplication.CreateBuilder(args);
-var connectionString = builder.Configuration.GetConnectionString("DbConnection");
-builder.Services.AddDbContextPool<AppDbContext>(db => db.UseSqlServer(connectionString));
-builder.Services.AddMassTransit(cfg =>
+IHostBuilder builder = Host.CreateDefaultBuilder(args);
+if (OperatingSystem.IsWindows())
 {
-    cfg.AddBus(provider=> MessageBrokers.RabbitMQProvider.ConfigureBus(provider));
-    cfg.AddSagaStateMachine<TicketStateMachine, TicketStateData>()
-        .EntityFrameworkRepository(r =>
+    builder.UseWindowsService();
+}
+
+if (OperatingSystem.IsLinux())
+{
+    builder.UseSystemd();
+}
+
+IHost host = builder.ConfigureServices((hostContext, services) =>
+    {
+        var connectionString = hostContext.Configuration.GetConnectionString("DbConnection");
+        services.AddDbContextPool<AppDbContext>(db => db.UseSqlServer(connectionString));
+        services.AddMassTransit(cfg =>
         {
-            r.ConcurrencyMode = ConcurrencyMode.Pessimistic; // or use Optimistic, which requires RowVersion
+            cfg.AddBus(provider=> MessageBrokers.RabbitMQProvider.ConfigureBus(provider));
+            cfg.AddSagaStateMachine<TicketStateMachine, TicketStateData>()
+                .EntityFrameworkRepository(r =>
+                {
+                    r.ConcurrencyMode = ConcurrencyMode.Pessimistic; // or use Optimistic, which requires RowVersion
 
-            r.ExistingDbContext<AppDbContext>();
+                    r.ExistingDbContext<AppDbContext>();
+                });
         });
-});
-var app = builder.Build();
+    }).Build();
 
-app.MapGet("/", () => "Hello World!");
-
-app.Run();
+host.Run();
