@@ -13,6 +13,7 @@ builder.Services.AddMassTransit(cfg =>
 {
     cfg.AddBus(provider => MessageBrokers.RabbitMQProvider.ConfigureBus(provider));
     cfg.AddConsumer<GenerateTicketConsumer>();
+    cfg.AddConsumer<CancelSendingEmailConsumer>();
 });
 var app = builder.Build();
 
