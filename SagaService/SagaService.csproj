@@ -1,7 +1,25 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
     <ItemGroup>
-      <ProjectReference Include="..\Events\Events.csproj" />
+      <ProjectReference Include="..\MessageBrokers\MessageBrokers.csproj" />
+      <ProjectReference Include="..\SagaStateMachine\SagaStateMachine.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="MassTransit" Version="8.1.1" />
+      <PackageReference Include="MassTransit.AspNetCore" Version="7.3.1" />
+      <PackageReference Include="MassTransit.EntityFrameworkCore" Version="8.1.1" />
+      <PackageReference Include="MassTransit.RabbitMQ" Version="8.1.1" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.11" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.11">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+      <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.11" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.11">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
     </ItemGroup>
 
     <PropertyGroup>
