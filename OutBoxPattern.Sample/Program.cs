@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using OutBoxPattern.Sample;
+using OutBoxPattern.Sample.BackgroundServices;
 using OutBoxPattern.Sample.Models;
 using OutBoxPattern.Sample.Services;
 
@@ -21,6 +22,7 @@ builder.Services.AddSingleton<IMailService, EmailService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IEmailOutbox, EmailOutboxService>();
 builder.Services.AddDbContextPool<AppDbContext>(options => options.UseSqlServer(connectionString));
+builder.Services.AddHostedService<EmailBackgroundService>();
 
 var app = builder.Build();
 
